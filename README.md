@@ -1,6 +1,9 @@
 # appdjango
+
 Aplicação baseada na documentação Django
 
+![Python package](https://github.com/jlplautz/appdjango/workflows/Python%20package/badge.svg?event=pull_request)
+![Python package](https://github.com/jlplautz/appdjango/workflows/Python%20package/badge.svg?event=deployment_status)
 
 ```python
     Iniciando app Django
@@ -71,4 +74,62 @@ jobs:
 #    - name: Test with pytest
 #      run: |
 #        pytest
+```
+
+# Criando o projeto e uma aplicação
+
+- (appdjango) appdjango $ django-admin startproject mysite .
+- (appdjango) appdjango $ mng startapp polls
+
+(appdjango) appdjango $ tree
+```
+(appdjango) appdjango $ tree
+.
+├── db.sqlite3
+├── LICENSE
+├── manage.py
+├── mysite
+│   ├── asgi.py
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── Pipfile
+├── Pipfile.lock
+├── polls
+│   ├── admin.py
+│   ├── apps.py
+│   ├── __init__.py
+│   ├── migrations
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── tests.py
+│   └── views.py
+├── README.md
+└── requirements.txt
+
+```
+
+# Create your views here.
+```
+from django.http import HttpResponse
+
+def index(request):
+    return HttpResponse("<h1>Hello, world. You're at the polls index.</h1>")
+```
+
+# Create your urls.py in the app polls
+```
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('', views.index, name='index'),
+]
+```
+
+# In tje urls.py file from projet was inseeted the follow lines 
+```
+from django.urls import path, include
+
+path('polls/', include('polls.urls')),
 ```
