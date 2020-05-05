@@ -207,3 +207,17 @@ AttributeError: 'Question' object has no attribute 'was_published_recently'
 >>> c.delete()
 (1, {'polls.Choice': 1})
 ```
+
+# Creating an admin user¶
+- python manage.py createsuperuser
+
+# Make the poll app modifiable in the admin
+```
+from django.contrib import admin
+from .models import Question
+
+admin.site.register(Question)
+```
+
+# Escrevendo mais views
+
