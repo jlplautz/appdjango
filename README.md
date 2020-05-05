@@ -4,6 +4,8 @@ Aplicação baseada na documentação Django
 
 ![Python package](https://github.com/jlplautz/appdjango/workflows/Python%20package/badge.svg?event=pull_request)
 ![Python package](https://github.com/jlplautz/appdjango/workflows/Python%20package/badge.svg?event=deployment_status)
+[![Updates](https://pyup.io/repos/github/jlplautz/appdjango/shield.svg)](https://pyup.io/repos/github/jlplautz/appdjango/)
+[![Python 3](https://pyup.io/repos/github/jlplautz/appdjango/python-3-shield.svg)](https://pyup.io/repos/github/jlplautz/appdjango/)
 
 ```python
     Iniciando app Django
