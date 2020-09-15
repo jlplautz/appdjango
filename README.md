@@ -222,3 +222,51 @@ admin.site.register(Question)
 ```
 
 # Escrevendo mais views
+
+
+# Escrevendo nosso primeiro teste
+```
+Felizmente, há um pequeno bug na aplicação polls para corrigirmos imediatamente: 
+O método Question.was_published_recently() retorna True se a Question foi publicada dentro do último dia 
+(o que está correto), mas também se o campo pub_date de Question está no futuro (o que certamente não é o caso).
+
+$ python manage.py shell
+>>> import datetime
+>>> from django.utils import timezone
+>>> from polls.models import Question
+>>> # create a Question instance with pub_date 30 days in the future
+>>> future_question = Question(pub_date=timezone.now() + datetime.timedelta(days=30))
+>>> # was it published recently?
+>>> future_question.was_published_recently()
+True
+```
+
+# Executando o teste
+$ python manage.py test polls
+```
+(appdjango) appdjango $ python manage.py test
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+F
+======================================================================
+FAIL: test_was_published_recently_with_future_question (polls.tests.QuestionModelTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/plautz/PycharmProjects/appdjango/polls/tests.py", 
+         line 18, in test_was_published_recently_with_future_question
+    self.assertIs(future_question.was_published_recently(), False)
+AssertionError: True is not False
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)
+Destroying test database for alias 'default'...
+```
+
+# Corrigindo o erro - polls/models.py
+```
+def was_published_recently(self):
+    now = timezone.now()
+    return now - datetime.timedelta(days=1) <= self.pub_date <= now
+```
