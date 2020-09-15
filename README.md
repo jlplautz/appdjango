@@ -1,14 +1,14 @@
 # appdjango
 
-Aplicação baseada na documentação Django
+# Aplicação baseada na documentação Django
 
-![Python package](https://github.com/jlplautz/appdjango/workflows/Python%20package/badge.svg?event=pull_request)
-![Python package](https://github.com/jlplautz/appdjango/workflows/Python%20package/badge.svg?event=deployment_status)
 [![Updates](https://pyup.io/repos/github/jlplautz/appdjango/shield.svg)](https://pyup.io/repos/github/jlplautz/appdjango/)
 [![Python 3](https://pyup.io/repos/github/jlplautz/appdjango/python-3-shield.svg)](https://pyup.io/repos/github/jlplautz/appdjango/)
+![Python package](https://github.com/jlplautz/appdjango/workflows/Python%20package/badge.svg)
 
-```python
-    Iniciando app Django
+
+```
+Iniciando app Django
 appdjango $ tree
 .
 ├── LICENSE
@@ -21,15 +21,15 @@ appdjango $ tree
 - (appdjango) appdjango $ pipenv install --dev flake8
 - (appdjango) appdjango $ pip freeze > requirements.txt
 
-# Criados os arquivos 
+# Criados os arquivos
 - .flake8
-``` 
+```
 [flake8]
 max-line-length = 120
 exclude = .venv
 ```
 - .pyup.yml
-``` 
+```
 requirements:
   - Pipfile
   - Pipfile.lock
@@ -129,13 +129,13 @@ urlpatterns = [
 ]
 ```
 
-# In tje urls.py file from projet was inseeted the follow lines 
+# In the urls.py file from project was inserted the follow lines
 ```
 from django.urls import path, include
 
 path('polls/', include('polls.urls')),
 ```
-# foi executado makemigrations polls
+# was executed makemigrations polls
 - python manage.py makemigrations polls
 ```
 (appdjango) appdjango $ python manage.py makemigrations polls
@@ -160,10 +160,10 @@ CREATE TABLE "polls_choice" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "c
 CREATE INDEX "polls_choice_question_id_c5b4b260" ON "polls_choice" ("question_id");
 COMMIT;
 ```
-# Python interactive shell by running python manage.py shel
+# Python interactive shell by running python manage.py shell
 ```
 (appdjango) appdjango $ python manage.py shell
-Python 3.8.0 (default, Feb  3 2020, 16:24:25) 
+Python 3.8.0 (default, Feb  3 2020, 16:24:25)
 [GCC 7.4.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 (InteractiveConsole)
@@ -222,4 +222,3 @@ admin.site.register(Question)
 ```
 
 # Escrevendo mais views
-
