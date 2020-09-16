@@ -270,3 +270,108 @@ def was_published_recently(self):
     now = timezone.now()
     return now - datetime.timedelta(days=1) <= self.pub_date <= now
 ```
+
+# Esccrever um teste para uma VIEW
+
+```
+(appdjango) appdjango $ python manage.py shell
+Python 3.8.0 (default, Feb  3 2020, 16:24:25) 
+[GCC 7.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from django.test.utils import setup_test_environment
+>>> setup_test_environment()
+>>> from django.test import Client
+>>> client = Client()
+>>> response = client.get('/')
+Not Found: /
+>>> response.status_code
+404
+>>> from django.urls import reverse
+>>> response = client.get(reverse('polls:index'))
+>>> response.status_code
+200
+>>> response.content
+b'<!DOCTYPE html>\n
+<html lang="en">\n
+<head>\n
+    <meta charset="UTF-8">\n
+    <title>TEMPLATE-INDEX</title>\n</head>\n
+<body>\n
+    \n
+        <ul>\n
+            \n
+                <li><a href="/polls/5/">Is there a new question?</a></li>\n
+            \n                <li><a href="/polls/1/">What&#x27;s up?</a></li>\n
+            \n
+        </ul>\n
+    \n
+\n
+</body>\n
+</html>'
+>>> response.context['latest_question_list']
+<QuerySet [<Question: Is there a new question?>, <Question: What's up?>]>
+>>> 
+```
+
+# Melhorando a nossa VIEW
+```
+  - class-based views, baseado no ListView
+    polls/views.py
+    class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
+
+    def get_queryset(self):
+        """
+        Return the last five published questions.
+        """
+        return Question.objects.order_by('-pub_date')[:5]
+    
+    OBS: o metodp get_queryset() para comparar a data com o timezone.com()
+```
+
+# Criado os testes com a Views
+  - class QuestionIndexViewTests(TestCase):
+     - def test_no_questions(self):
+     - def test_past_question(self):
+     - def test_future_question(self):
+     - def test_future_question_and_past_question(self):
+     - def test_two_past_questions(self):
+  
+  Vejamos algumas delas mais de perto.
+
+O primeiro é uma função de atalho para questão, create_question, para retirar algumas repetições do processo 
+de criar questões.
+
+**test_no_questions** não cria nenhuma questão, mas verifica a mensagem:”Nenhuma enquete disponível.” e verifica 
+que latest_question_list está vazia. Note que a classe django.test.TestCase fornece alguns métodos adicionais 
+de assertividade. Nestes exemplos nós usamos assertContains() e assertQuerysetEqual().
+
+Em **test_past_question**, criamos uma questão e verificamos se esta aparece na lista.
+Em **test_future_question**, nós criamos uma pub_date no futuro. O banco de dados é resetado para cada método de 
+teste, quer dizer que a primeira questão não está mais lá, então novamente o index não deve ter nenhuma questão.
+
+E assim por diante. De fato, estamos usando os testes para contar uma história de entradas no site de administração 
+e da experiencia do usuário, e verificando se para cada estado e para cada nova alteração no estado do sistema, 
+o resultado esperado é publicado.
+
+
+# Testando do DetailView
+
+- Inserido no polls/views.py
+  ```
+      def get_queryset(self):
+        """
+        Excludes any questions that aren't published yet.
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now())
+
+  ```
+  
+  -   Inserido os testes polls/tests.py
+    class QuestionDetailViewTests(TestCase):
+         def test_future_question(self):
+         def test_past_question(self):
+          
+    
