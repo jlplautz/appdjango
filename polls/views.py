@@ -80,7 +80,9 @@ class IndexView(generic.ListView):
            pub_date__lte=timezone.now()
         ).order_by('-pub_date')[:5]
 
-        """Question.objects.filter(pub_date__lte=timezone.now()) retorna um queryset contendo Questions cujo o pub_date é menor ou igual a - que quer dizer, anterior ou igual a - timezone.now."""
+        # Question.objects.filter(pub_date__lte=timezone.now())
+        # retorna um queryset contendo Questions cujo o pub_date é menor ou igual a
+        # - que quer dizer, anterior ou igual a - timezone.now.
 
 
 class DetailView(generic.DetailView):
