@@ -374,4 +374,22 @@ o resultado esperado é publicado.
          def test_future_question(self):
          def test_past_question(self):
           
-    
+# Personalizando aparencia da sua aplicação
+- Criar um diretorio static -> polls/static
+- Criar um diretorio static -> polls/static/polls/style.css
+  - pools/static/pools/style.css
+    li a {
+        color: green;
+    }
+- inserir no file polls/templates/polls/index.html
+  ```
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+  ```
+- Criar um diretorio static -> polls/static/polls/images/
+- inserir no file polls/static/polls/style.css
+  ```
+  body {
+    background: white url("images/background.gif") no-repeat;
+  }
+  ``` 
