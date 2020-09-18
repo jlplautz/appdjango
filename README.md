@@ -393,3 +393,77 @@ o resultado esperado é publicado.
     background: white url("images/background.gif") no-repeat;
   }
   ``` 
+  
+  # Personalisar o formulario do site de administração
+  - polls/admin
+  ```
+    from django.contrib import admin
+    from .models import Question
+
+    class QuestionAdmin(admin.ModelAdmin):
+        fields = ['pub_date', 'question_text']
+
+    admin.site.register(Question, QuestionAdmin)
+  ```
+  - como dividir o formulário em grupos:
+  ```
+    from django.contrib import admin
+    from .models import Question
+
+    class QuestionAdmin(admin.ModelAdmin):
+        fieldsets = [
+            (None,               {'fields': ['question_text']}),
+            ('Date information', {'fields': ['pub_date']}),
+        ]
+    admin.site.register(Question, QuestionAdmin)
+  ```
+  obs: O primeiro elemento de cada tupla em fieldsets é o título do grupo. 
+        Aqui está como o nosso formulário se parece agora:
+   
+### veja o printscreen
+        
+  ![](polls/static/polls/images/printscreen-small.png)
+  
+
+# Como adicionar Choice via site admin
+  - polls/admin.py
+  ```
+    from django.contrib import admin
+    from .models import Choice, Question
+
+    class ChoiceInline(admin.StackedInline):
+        model = Choice
+        extra = 3
+
+    class QuestionAdmin(admin.ModelAdmin):
+        fieldsets = [
+            (None,               {'fields': ['question_text']}),
+            ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
+        ]
+    inlines = [ChoiceInline]
+
+    admin.site.register(Question, QuestionAdmin)
+  ```
+  ### veja o printscreen
+  
+  ![](polls/static/polls/images/printscreen-AdminSite.png)
+
+  - para reduzir o espaço podemos usar TABULAR WAY
+    - polls/admin.py
+      ##class ChoiceInline(admin.TabularInline):
+
+  ![](polls/static/polls/images/printscreen-TabularInline.png)
+  
+ ## Personalizar a listagem da pagina de administração
+   - polls/admin.py
+     list_display = ('question_text', 'pub_date', 'was_published_recently')
+     list_filter = ['pub_date']        # filter by date
+     search_fields = ['question_text'] # search question
+   
+   - polls/models.py
+     was_published_recently.admin_order_field = 'pub_date'
+     was_published_recently.boolean = True
+     was_published_recently.short_description = 'Published recently?'    
+ 
+   ### veja o printscreen
+   ![](polls/static/polls/images/printscreen-Filter_Search.png)  
